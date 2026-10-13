@@ -1,0 +1,8 @@
+# Paths of the five derived data files (relative paths are resolved against the repository root).
+# Copy this file to configs/local_paths.yaml; with data built into data/ (see README), no change is needed.
+files:
+  o_it_R2.parquet: data/o_it_R2.parquet
+  flow_store_reporters.parquet: data/flow_store_reporters.parquet
+  window_dominant.parquet: data/window_dominant.parquet
+  meta.json: data/meta.json
+  CACHE_MANIFEST.json: data/CACHE_MANIFEST.json

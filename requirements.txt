@@ -1,0 +1,14 @@
+# Verified with Python 3.10.20 (Windows 11, x86-64); install into a fresh virtual environment.
+numpy==2.2.6
+pandas==2.3.3
+scikit-learn==1.7.2
+scipy==1.15.3
+pyarrow==25.0.0
+PyYAML==6.0.3
+# dependencies of the packages above, at the verified versions
+joblib==1.5.3
+threadpoolctl==3.6.0
+python-dateutil==2.9.0.post0
+pytz==2026.2
+tzdata==2026.3
+six==1.17.0

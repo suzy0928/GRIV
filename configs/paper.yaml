@@ -1,0 +1,45 @@
+# Settings of the reported experiments. griv/config.py refuses any value that differs from the paper.
+profile: paper
+data:
+  manifest: manifests/DATA_MANIFEST.json
+  local_paths: configs/local_paths.yaml
+  corpus_assert: {raw_flows: 19307096, reporters: 19, reports: 42390, benign: 24968, attack: 17422,
+                  by_type: {backdoor: 1560, ddos: 4252, dos: 3108, injection: 705, password: 4062, scanning: 2225, xss: 1510}}
+seeds:
+  cw: [420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439]   # 20 runs
+  rd: [420,421,422,423,424,425,426,427,428,429]                                           # 10 runs
+# Partitions (Section 5.2): K = purge gap in 60-s windows (20 min)
+split_common: {K: 20, K_val: 20, val_cal_frac: 0.5, episode_gap_min: 20, val_purge_side: alternate}
+splits:
+  CW: {test_frac: 0.30, val_frac: 0.175, episode_align: true, align_tolerance_pp: 10,
+       xpurge_check: {max_test_attack_window_loss: 0.10, all_types_all_partitions: true}}
+  RD: {base: CW}
+rd_folds: all
+# Models and operating points (Section 5.4)
+threshold: {quantile: 0.99, method: linear, population: VAL_THR_benign_covered, alert: strict_gt}
+classifier: {node_ids: predict, rf: {n_estimators: 100, class_weight: balanced}, calibration: platt_on_VAL_CAL}
+mlp: {hidden: [64, 32], activation: relu, alpha: 1.0e-4, max_iter: 300, early_stopping: true, n_iter_no_change: 15,
+      sample_weight: balanced, sklearn_min_version: "1.7"}
+gateway: {s_main: 0.3, stream: gw}
+s_grid: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+# Comparison methods (Section 5.5); MultiplicativeScore = multiplicative-score decision-rule ablation
+methods: [GRIV, FeatureResidual, ProbabilityDifference, JSDivergence, LogOddsDifference, MahalanobisDistance, MultiplicativeScore]
+method_params: {prob_clip_eps: 1.0e-6, mahalanobis: {cov_reg: 1.0e-6}, std_floor: 1.0e-8, min_reporter_reports: 10}
+# Attacks (Sections 3.3 and 5.3)
+compromise: {beta_grid: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]}
+attacks:
+  mu_ben_population: calibration_windows
+  modification_tolerance: 1.0e-9
+  concealment: {alpha_grid: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.95,0.99,1.0], alpha_main: 1.0}
+  adaptive: {alpha_step: 0.01, step_sensitivity: [0.02, 0.05]}
+# Statistics and cost (Section 5.6)
+bootstrap: {B: 10000, rng_seed: 20261002}
+cost: {warmup: 3, repeats: 20, threads: 1}
+experiments:
+  complete_concealment: {splits: [CW, RD], attacks: [{kind: concealment, alpha: [1.0]}]}
+  concealment_strength: {splits: [CW], attacks: [{kind: concealment, alpha: grid}]}
+  adaptive: {splits: [CW, RD], attacks: [{kind: adaptive, step: [0.01]}, {kind: adaptive, step: [0.02, 0.05], splits: [CW]}]}
+  sampling_rate: {splits: [CW], s: grid, attacks: [{kind: concealment, alpha: [1.0]}]}
+  cost: {splits: [CW], cost: true, s: grid}
+  no_platt: {splits: [CW], variant: no_platt, attacks: [{kind: concealment, alpha: [1.0]}, {kind: adaptive, step: [0.01]}]}
+  mlp: {splits: [CW], classifier: mlp, attacks: [{kind: concealment, alpha: [1.0]}, {kind: adaptive, step: [0.01]}]}

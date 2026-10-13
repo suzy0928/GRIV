@@ -1,0 +1,12 @@
+{
+  "manifest": "GRIV derived data files (SHA-256)",
+  "sha256": {
+    "CACHE_MANIFEST.json": "ffda5a9f226a30d00e7481965069d6fa8ae09049141c6ad03f9ca87f03e62d5e",
+    "o_it_R2.parquet": "2db072ea7c1fb2057fab4a781cc06ffe964dc721b76fbed58210c2e10b6e1cd4",
+    "flow_store_reporters.parquet": "969ea6a14120b0df015ed0e9315a29dd7126b4f9b83bb8220a1b702d31a8c858",
+    "window_dominant.parquet": "2857c206bfa8c6ad443f8b44c46ceae2367d11cb2567178d82b4d28099de547e",
+    "meta.json": "8b3b72dedd8364491b34afb1c389f43479b884d727c67525b8cb52fc034f5413"
+  },
+  "meta_json_content_sha256": "6cc17f4d91da497aedc309e43890dcbeae6540d57ad07bd59317ab5807c65317",
+  "meta_json_content_note": "SHA-256 of meta.json without elapsed_seconds (build time), as canonical JSON (sorted keys, separators ',' ':'); a rebuilt meta.json is accepted if it matches"
+}

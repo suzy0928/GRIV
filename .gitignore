@@ -1,0 +1,8 @@
+configs/local_paths.yaml
+results/
+data/
+raw/
+*.parquet
+__pycache__/
+.pytest_cache/
+.venv/
